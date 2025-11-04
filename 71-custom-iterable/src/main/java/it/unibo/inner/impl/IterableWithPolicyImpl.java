@@ -13,12 +13,15 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
 
 
     public IterableWithPolicyImpl(final T[] elements) {
-        this(elements, new Predicate<T>() {
-            @Override
-            public boolean test(T elem) {
-                return true;
+        this(
+            elements,
+            new Predicate<T>() {
+                @Override
+                public boolean test(T elem) {
+                    return true;
+                }
             }
-        });
+        );
     }
 
     public IterableWithPolicyImpl(final T[] elements, final Predicate<T> filter) {
@@ -32,7 +35,7 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
     }
 
     @Override
-    public void setIterationPolicy(Predicate<T> filter) {
+    public void setIterationPolicy(final Predicate<T> filter) {
         this.filter = filter;
     }
 
@@ -43,7 +46,9 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
         @Override
         public boolean hasNext() {
             while (currentIndex < elements.length) {
-                if (filter.test(elements[currentIndex])) return true;
+                if (filter.test(elements[currentIndex])) {
+                    return true;
+                }
                 currentIndex++;
             }
             return false;
@@ -51,7 +56,9 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
 
         @Override
         public T next() {
-            if (!hasNext()) throw new NoSuchElementException();
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             return elements[currentIndex++];
         }
     }
