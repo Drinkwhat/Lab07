@@ -52,8 +52,6 @@ public final class MonthSorterNested implements MonthSorter {
                     return monthArray.getFirst();
                 }
             }
-            // todo mettere gli else
-     
         }
     }
 
