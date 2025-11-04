@@ -30,13 +30,16 @@ public final class MonthSorterNested implements MonthSorter {
         public int getDays() {
             return days;
         }
+
         public static Month fromString(final String month) {
+            
             if (month == null) {
                 throw new IllegalArgumentException("month cannot be null");
             }
     
             ArrayList<Month> monthArray = new ArrayList<>();
             String input = month.trim().toUpperCase();
+            
             for (Month e : Month.values()) {
                 if (e.toString().startsWith(input)) {
                     monthArray.add(e);
@@ -52,13 +55,11 @@ public final class MonthSorterNested implements MonthSorter {
             }
 
             return monthArray.getFirst();
-        
         }
     }
 
     @Override
     public Comparator<String> sortByDays() {
-
 
         return  (m1, m2) -> {
             try {
@@ -73,8 +74,8 @@ public final class MonthSorterNested implements MonthSorter {
 
     @Override
     public Comparator<String> sortByOrder() {
+        
         return  (m1, m2) -> {
-            
             try {
                 Month M1 = Month.fromString(m1);
                 Month M2 = Month.fromString(m2);
