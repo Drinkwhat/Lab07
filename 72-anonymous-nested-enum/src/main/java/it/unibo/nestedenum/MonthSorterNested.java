@@ -32,35 +32,33 @@ public final class MonthSorterNested implements MonthSorter {
         }
 
         public static Month fromString(final String month) {
+            ArrayList<Month> monthArray = new ArrayList<>();
+            String input;
             
             if (month == null) {
                 throw new IllegalArgumentException("month cannot be null");
+            } else {
+                input = month.trim().toUpperCase();
+                for (Month e : Month.values()) {
+                    if (e.toString().startsWith(input)) {
+                        monthArray.add(e);
+                    };
+                }
+                if (monthArray.size() == 0) {
+                    throw new IllegalArgumentException("as no month with such name");
+                } else if (monthArray.size() > 1) {
+                    throw new IllegalArgumentException("there are many months starts with " +  month);
+                } else {
+                    return monthArray.getFirst();
+                }
             }
-    
-            ArrayList<Month> monthArray = new ArrayList<>();
-            String input = month.trim().toUpperCase();
-            
-            for (Month e : Month.values()) {
-                if (e.toString().startsWith(input)) {
-                    monthArray.add(e);
-                };
-            }
-            
-            if (monthArray.size() == 0) {
-                throw new IllegalArgumentException("as no month with such name");
-            }
-
-            if (monthArray.size() > 1) {
-                throw new IllegalArgumentException("there are many months starts with " +  month);
-            }
-
-            return monthArray.getFirst();
+            // todo mettere gli else
+     
         }
     }
 
     @Override
     public Comparator<String> sortByDays() {
-
         return  (m1, m2) -> {
             try {
                 Month M1 = Month.fromString(m1);
@@ -74,7 +72,6 @@ public final class MonthSorterNested implements MonthSorter {
 
     @Override
     public Comparator<String> sortByOrder() {
-        
         return  (m1, m2) -> {
             try {
                 Month M1 = Month.fromString(m1);
