@@ -1,21 +1,87 @@
 package it.unibo.nestedenum;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Implementation of {@link MonthSorter}.
  */
 public final class MonthSorterNested implements MonthSorter {
+    public enum Month {
+        JANUARY(31),
+        FEBRUARY(28),
+        MARCH(31),
+        APRIL(30),
+        MAY(31),
+        JUNE(30),
+        JULY(31),
+        AUGUST(31),
+        SEPTEMBER(30),
+        OCTOBER(31),
+        NOVEMBER(30),
+        DECEMBER(31);
+
+        private final int days;
+
+        Month(final int days) {
+            this.days = days;
+        }
+
+        public int getDays() {
+            return days;
+        }
+        public static Month fromString(final String month) {
+            if (month == null) {
+                throw new IllegalArgumentException("month cannot be null");
+            }
+    
+            ArrayList<Month> monthArray = new ArrayList<>();
+            String input = month.trim().toUpperCase();
+            for (Month e : Month.values()) {
+                if (e.toString().startsWith(input)) {
+                    monthArray.add(e);
+                };
+            }
+            
+            if (monthArray.size() == 0) {
+                throw new IllegalArgumentException("as no month with such name");
+            }
+
+            if (monthArray.size() > 1) {
+                throw new IllegalArgumentException("there are many months starts with " +  month);
+            }
+
+            return monthArray.getFirst();
+        
+        }
+    }
 
     @Override
     public Comparator<String> sortByDays() {
-        return null;
+
+
+        return  (m1, m2) -> {
+            try {
+                Month M1 = Month.fromString(m1);
+                Month M2 = Month.fromString(m2);
+                return Integer.compare(M1.days, M2.days);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid month name", e);
+            }
+        };
     }
 
     @Override
     public Comparator<String> sortByOrder() {
-        return null;
+        return  (m1, m2) -> {
+            
+            try {
+                Month M1 = Month.fromString(m1);
+                Month M2 = Month.fromString(m2);
+                return Integer.compare(M1.ordinal(), M2.ordinal());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid month name", e);
+            }
+        };
     }
 }
